@@ -1,0 +1,31 @@
+{
+  "name": "pancakebot",
+  "version": "1.0.0",
+  "description": "A trackmania bot used for all kinds of tracking and fun projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --out-dir dist",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanJohnKennedy/PancakeBot.git"
+  },
+  "author": "RyanJohnKennedy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RyanJohnKennedy/PancakeBot/issues"
+  },
+  "homepage": "https://github.com/RyanJohnKennedy/PancakeBot#readme",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
