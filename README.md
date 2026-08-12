@@ -6,7 +6,7 @@
 
 - Node.js 18 or later
 - A Discord application with a bot user
-- The PancakeBot API running locally (required for `/totd`)
+- The PancakeBot API running locally (required for `/totd` and `/totd-month`)
 
 In the [Discord Developer Portal](https://discord.com/developers/applications), create or select an application, add a bot user, and invite it to your test server with the `bot` and `applications.commands` scopes. Copy the bot token and application ID from the portal.
 
@@ -52,7 +52,7 @@ From this repository:
 npm run dev
 ```
 
-When the bot comes online, it registers its slash commands in every server it belongs to. In Discord, run `/totd` to fetch and display yesterday's Track of the Day leaderboard.
+When the bot comes online, it registers its slash commands in every server it belongs to. Run `/totd` to display yesterday's Track of the Day leaderboard, or `/totd-month` to display the current month's cumulative points leaderboard.
 
 ## Production-style local run
 
