@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { config } from "../config";
 
 type TotdLeaderboardResponse = {
@@ -22,6 +22,25 @@ function formatTime(milliseconds: number): string {
     return `${minutes}:${seconds.toString().padStart(2, "0")}.${remainingMilliseconds
         .toString()
         .padStart(3, "0")}`;
+}
+
+function formatLeaderboard(results: TotdResult[]): string {
+    const nameWidth = Math.min(
+        24,
+        Math.max(...results.map((result) => result.playerName.length), "Player".length)
+    );
+
+    const rows = results.map((result) => {
+        const name = result.playerName.replace(/`/g, "'").slice(0, nameWidth);
+        const points = `${result.pointsAwarded} pts`;
+
+        return `${`${result.rank}.`.padEnd(4)}${name.padEnd(nameWidth)}  ${formatTime(result.score).padStart(9)}  ${points.padStart(5)}`;
+    });
+
+    return [
+        `#   ${"Player".padEnd(nameWidth)}  ${"Time".padStart(9)}  Pts`,
+        ...rows,
+    ].join("\n");
 }
 
 export const totd = {
@@ -53,12 +72,19 @@ export const totd = {
             }
 
             const title = leaderboard.mapName ?? "Track of the Day";
-            const lines = leaderboard.results.map(
-                (result) =>
-                    `**${result.rank}.** ${result.playerName} — ${formatTime(result.score)} (${result.pointsAwarded} pts)`
-            );
+            const date = new Date(`${leaderboard.totdDate}T00:00:00Z`).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+            });
+            const embed = new EmbedBuilder()
+                .setColor(0xf5a623)
+                .setTitle("Yesterday's Track of the Day")
+                .setDescription(`**${title}**\n\n\`\`\`\n${formatLeaderboard(leaderboard.results)}\n\`\`\``)
+                .setFooter({ text: date });
 
-            await interaction.editReply(`**Yesterday's TOTD — ${title}**\n${lines.join("\n")}`);
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             console.error("Failed to fetch yesterday's TOTD results", error);
             await interaction.editReply("I couldn't retrieve yesterday's Track of the Day results. Please try again shortly.");
