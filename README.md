@@ -26,6 +26,8 @@ DISCORD_TOKEN=your-discord-bot-token
 DISCORD_CLIENT_ID=your-discord-application-id
 API_BASE_URL=http://localhost:5053
 API_KEY=the-same-key-configured-in-the-api
+GUILD_RATE_LIMIT_MAX_REQUESTS=5
+GUILD_RATE_LIMIT_WINDOW_SECONDS=60
 ```
 
 `API_KEY` must match the backend's `ApiKey:Key` setting. For local development, you can set it in the API project with:
@@ -33,6 +35,8 @@ API_KEY=the-same-key-configured-in-the-api
 ```bash
 dotnet user-secrets set "ApiKey:Key" "your-local-api-key"
 ```
+
+The bot permits five slash-command calls per server in each rolling 60-second window by default. Adjust `GUILD_RATE_LIMIT_MAX_REQUESTS` and `GUILD_RATE_LIMIT_WINDOW_SECONDS` to suit your server. Requests over the limit receive an ephemeral retry message and do not call the API.
 
 ### Start the API
 
